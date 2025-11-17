@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MultipleReturn from './MultipleReturn';
-
+import App from './App';
+import A from './A';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Data /> */}
-    {/* <Form /> */}
-    {/* <UseEffect /> */}
-    {/* <Fetch /> */}
-    <MultipleReturn />
+    <A />
   </React.StrictMode>
 );
