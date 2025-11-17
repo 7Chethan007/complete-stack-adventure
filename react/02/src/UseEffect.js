@@ -20,12 +20,23 @@ const UseEffect = () => {
   // }, [clicked]); // Runs when 'clicked' state changes
   // // if [clicked] is not provided, then after each increment of count, alert will be shown for clicked state
 
-  useEffect(() => {
-    alert(`Count value: ${count}`);
-  }, [clicked,count]); 
-  // Runs and renders and alerts 
-  // when either 'clicked' or 'count' state changes
+  // useEffect(() => {
+  //   alert(`Count value: ${count}`);
+  // }, [clicked,count]); 
+  // // Runs and renders and alerts 
+  // // when either 'clicked' or 'count' state changes
 
+
+  // Cleanup function example
+  useEffect(() => {
+    console.log('Effect function called');
+
+    // First the return function (cleanup) is called before the next effect/unmounting/anything on top of it
+    // So we can use it to cleanup subscriptions, timers, etc.
+    return () => {
+      console.log('Cleanup function called before next effect or unmounting');
+    }
+  }, [clicked,count]); 
 
   return (
     <div>
