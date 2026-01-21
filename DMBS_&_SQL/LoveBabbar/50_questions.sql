@@ -6,6 +6,7 @@ select UPPER(first_name) from worker;
 
 -- Q-3. Write an SQL query to fetch unique values of DEPARTMENT from Worker table.
 SELECT distinct department from worker;
+select department from worker group by department;
 
 -- Q-4. Write an SQL query to print the first three characters of  FIRST_NAME from Worker table.
 select substring(first_name, 1, 3) from worker;
@@ -17,17 +18,17 @@ select INSTR(first_name, 'B') from worker where first_name = 'Amitabh';
 select RTRIM(first_name) from worker;
 
 -- Q-7. Write an SQL query to print the DEPARTMENT from Worker table after removing white spaces from the left side.
-select LTRIM(first_name) from worker;
+select first_name, ltrim(last_name) from worker;
 
 -- Q-8. Write an SQL query that fetches the unique values of DEPARTMENT from Worker table and prints its length.
 select distinct department, LENGTH(department) from worker;
 
 -- Q-9. Write an SQL query to print the FIRST_NAME from Worker table after replacing ‘a’ with ‘A’.
-select REPLACE(first_name, 'a', 'A')  from worker;
+select replace(first_name,'a','A') from worker;
 
 -- Q-10. Write an SQL query to print the FIRST_NAME and LAST_NAME from Worker table into a single column COMPLETE_NAME.
 -- A space char should separate them.
-select CONCAT(first_name, ' ', last_name) AS COMPLETE_NAME from worker;
+select concat(first_name,' ',last_name) as full_name from worker;
 
 -- Q-11. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending.
 select * from worker ORDER by first_name;
@@ -174,3 +175,33 @@ select department , sum(salary) as depSal from worker group by department order 
 select first_name, salary from worker where salary = (select max(Salary) from worker);
 
 
+
+-- Q-51. Write SQL query to remove reverse pairs from the table
+-- Create and use the database/schema
+USE temp;
+-- Create the pairs table
+CREATE TABLE pairs (
+    A INT,
+    B INT
+);
+-- Insert the sample data
+INSERT INTO pairs VALUES 
+    (1,2), (2,4), (2,1), (3,2), (4,2), (5,6), (6,5), (7,8);
+-- Verify initial data
+SELECT * FROM pairs;
+
+-- Remove reversed pairs (METHOD 1: JOINS)
+SELECT lt.* FROM pairs lt 
+LEFT JOIN pairs rt ON lt.A = rt.B AND lt.B = rt.A
+WHERE rt.A IS NULL OR lt.A < rt.A;
+
+-- METHOD 2: CORRELATED SUBQUERY
+-- This uses "NOT EXISTS" to check if a reversed version of the row exists 
+-- where the value of A is smaller than the current A.
+SELECT * FROM pairs p1 
+WHERE NOT EXISTS (
+    SELECT * FROM pairs p2 
+    WHERE p1.B = p2.A 
+      AND p1.A = p2.B 
+      AND p1.A > p2.A
+);
